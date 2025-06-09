@@ -4,7 +4,7 @@ from typing import Dict, Any, List
 from pathlib import Path
 import json
 
-from mcp import Server
+from mcp.server import Server
 from mcp.server import stdio
 from mcp.types import Tool, TextContent, ImageContent, EmbeddedResource
 
@@ -180,7 +180,7 @@ async def main():
     """Main entry point."""
     logger.info("Starting MCP Code Analyzer Server")
     async with stdio.stdio_server() as (read_stream, write_stream):
-        await server.run(read_stream, write_stream)
+        await server.run(read_stream, write_stream, initialization_options={})
 
 if __name__ == "__main__":
     asyncio.run(main())

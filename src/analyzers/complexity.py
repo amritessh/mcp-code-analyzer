@@ -74,10 +74,10 @@ class ComplexityAnalyzer:
         self, 
         content: str, 
         filename: str
-    ) -> List[radon_cc.ComplexityResult]:
+    ) -> List[ComplexityVisitor]:
         """Calculate cyclomatic complexity."""
         try:
-            results = radon_cc.cc_visit(content, filename)
+            results = radon_cc.cc_visit(content)
             return sorted(results, key=lambda x: x.complexity, reverse=True)
         except SyntaxError as e:
             logger.error(f"Syntax error in complexity analysis: {e}")
@@ -128,22 +128,27 @@ class ComplexityAnalyzer:
     
     def _format_complexity_details(
         self, 
-        results: List[radon_cc.ComplexityResult]
+        results: List[ComplexityVisitor]
     ) -> List[Dict[str, Any]]:
         """Format complexity results for output."""
         details = []
         
         for r in results:
             complexity_level = self._get_complexity_level(r.complexity)
-            details.append({
+            detail = {
                 'name': r.name,
                 'type': r.letter,  # F for function, C for class, M for method
                 'complexity': r.complexity,
                 'risk_level': complexity_level,
                 'line_number': r.lineno,
-                'end_line': r.endline,
-                'is_method': r.is_method
-            })
+                'end_line': r.endline
+            }
+            
+            # Only add is_method for functions/methods
+            if hasattr(r, 'is_method'):
+                detail['is_method'] = r.is_method
+                
+            details.append(detail)
         
         return details
     
@@ -162,7 +167,7 @@ class ComplexityAnalyzer:
     
     def _identify_hotspots(
         self, 
-        results: List[radon_cc.ComplexityResult]
+        results: List[ComplexityVisitor]
     ) -> List[Dict[str, Any]]:
         """Identify complexity hotspots that need attention."""
         hotspots = []

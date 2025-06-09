@@ -2,6 +2,7 @@
 import click
 import asyncio
 from pathlib import Path
+from typing import Dict, Any
 from rich.console import Console
 from rich.table import Table
 from rich.progress import Progress, SpinnerColumn, TextColumn
@@ -50,7 +51,7 @@ async def _analyze_file(file_path: Path, use_cache: bool):
             console.print("\n[bold blue]Complexity Analysis[/bold blue]")
             _display_complexity_results(complexity)
 
-def _display_basic_results(result: Dict[str, Any]):
+def _display_basic_results(result: dict[str, Any]):
     """Display basic analysis results."""
     table = Table(title="File Metrics")
     table.add_column("Metric", style="cyan")

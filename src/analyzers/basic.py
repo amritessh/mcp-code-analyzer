@@ -13,18 +13,25 @@ class BasicAnalyzer:
     """Basic file analyzer for code metrics."""
     
     def __init__(self):
-        # self.language_mapping = {
-        #     '.py': 'Python',
-        #     '.js': 'JavaScript',
-        #     '.ts': 'TypeScript',
-        #     '.java': 'Java',
-        #     '.go': 'Go',
-        #     '.rs': 'Rust',
-        #     '.cpp': 'C++',
-        #     '.c': 'C',
-        # }
+        self.language_mapping = {
+            '.py': 'Python',
+            '.js': 'JavaScript',
+            '.ts': 'TypeScript',
+            '.java': 'Java',
+            '.go': 'Go',
+            '.rs': 'Rust',
+            '.cpp': 'C++',
+            '.c': 'C',
+        }
         self.complexity_analyzer = ComplexityAnalyzer()
         self.cache = FileCache()
+        
+        self.comment_patterns = {
+            'Python': (r'#.*$', r'"""[\s\S]*?"""', r"'''[\s\S]*?'''"),
+            'JavaScript': (r'//.*$', r'/\*[\s\S]*?\*/'),
+            'Java': (r'//.*$', r'/\*[\s\S]*?\*/'),
+            'C': (r'//.*$', r'/\*[\s\S]*?\*/'),
+        }
 
     async def analyze_complexity(
         self, 
@@ -37,13 +44,6 @@ class BasicAnalyzer:
             include_details
         )
         
-        # self.comment_patterns = {
-        #     'Python': (r'#.*$', r'"""[\s\S]*?"""', r"'''[\s\S]*?'''"),
-        #     'JavaScript': (r'//.*$', r'/\*[\s\S]*?\*/'),
-        #     'Java': (r'//.*$', r'/\*[\s\S]*?\*/'),
-        #     'C': (r'//.*$', r'/\*[\s\S]*?\*/'),
-        # }
-    
     async def analyze_basic(self, file_path: Path) -> Dict[str, Any]:
         cached = await self.cache.get(file_path, "basic")
         if cached:
@@ -86,14 +86,6 @@ class BasicAnalyzer:
         
         return result
         
-        
-        # return {
-        #     'file_path': str(file_path),
-        #     'size_bytes': file_path.stat().st_size,
-        #     'language': language,
-        #     'metrics': metrics
-        # }
-    
     def detect_language(self, file_path: Path) -> str:
         """Detect programming language from file extension."""
         return self.language_mapping.get(file_path.suffix, 'Unknown')

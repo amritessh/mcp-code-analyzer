@@ -5,3 +5,4 @@ python-dotenv>=1.0.0
 colorama>=0.4.6
 click>=8.1.0
 rich>=13.0.0
+aiofiles>=23.0.0
