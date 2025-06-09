@@ -7,6 +7,7 @@ import re
 from ..utils.logger import logger
 from ..config import settings
 from .complexity import ComplexityAnalyzer
+from ..storage.cache import FileCache
 
 class BasicAnalyzer:
     """Basic file analyzer for code metrics."""
@@ -23,6 +24,7 @@ class BasicAnalyzer:
         #     '.c': 'C',
         # }
         self.complexity_analyzer = ComplexityAnalyzer()
+        self.cache = FileCache()
 
     async def analyze_complexity(
         self, 
@@ -43,6 +45,9 @@ class BasicAnalyzer:
         # }
     
     async def analyze_basic(self, file_path: Path) -> Dict[str, Any]:
+        cached = await self.cache.get(file_path, "basic")
+        if cached:
+            return cached
         """Perform basic analysis on a file."""
         logger.debug(f"Analyzing file: {file_path}")
         
@@ -69,13 +74,25 @@ class BasicAnalyzer:
         if language == 'Python' and file_path.suffix == '.py':
             python_metrics = self.analyze_python_structure(content)
             metrics.update(python_metrics)
-        
-        return {
+            
+        result = {
             'file_path': str(file_path),
             'size_bytes': file_path.stat().st_size,
             'language': language,
             'metrics': metrics
         }
+        
+        await self.cache.set(file_path, "basic", result)
+        
+        return result
+        
+        
+        # return {
+        #     'file_path': str(file_path),
+        #     'size_bytes': file_path.stat().st_size,
+        #     'language': language,
+        #     'metrics': metrics
+        # }
     
     def detect_language(self, file_path: Path) -> str:
         """Detect programming language from file extension."""
