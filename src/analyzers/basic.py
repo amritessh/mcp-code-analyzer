@@ -6,28 +6,41 @@ import re
 
 from ..utils.logger import logger
 from ..config import settings
+from .complexity import ComplexityAnalyzer
 
 class BasicAnalyzer:
     """Basic file analyzer for code metrics."""
     
     def __init__(self):
-        self.language_mapping = {
-            '.py': 'Python',
-            '.js': 'JavaScript',
-            '.ts': 'TypeScript',
-            '.java': 'Java',
-            '.go': 'Go',
-            '.rs': 'Rust',
-            '.cpp': 'C++',
-            '.c': 'C',
-        }
+        # self.language_mapping = {
+        #     '.py': 'Python',
+        #     '.js': 'JavaScript',
+        #     '.ts': 'TypeScript',
+        #     '.java': 'Java',
+        #     '.go': 'Go',
+        #     '.rs': 'Rust',
+        #     '.cpp': 'C++',
+        #     '.c': 'C',
+        # }
+        self.complexity_analyzer = ComplexityAnalyzer()
+
+    async def analyze_complexity(
+        self, 
+        file_path: Path, 
+        include_details: bool = False
+    ) -> Dict[str, Any]:
+        """Delegate to complexity analyzer."""
+        return await self.complexity_analyzer.analyze_complexity(
+            file_path, 
+            include_details
+        )
         
-        self.comment_patterns = {
-            'Python': (r'#.*$', r'"""[\s\S]*?"""', r"'''[\s\S]*?'''"),
-            'JavaScript': (r'//.*$', r'/\*[\s\S]*?\*/'),
-            'Java': (r'//.*$', r'/\*[\s\S]*?\*/'),
-            'C': (r'//.*$', r'/\*[\s\S]*?\*/'),
-        }
+        # self.comment_patterns = {
+        #     'Python': (r'#.*$', r'"""[\s\S]*?"""', r"'''[\s\S]*?'''"),
+        #     'JavaScript': (r'//.*$', r'/\*[\s\S]*?\*/'),
+        #     'Java': (r'//.*$', r'/\*[\s\S]*?\*/'),
+        #     'C': (r'//.*$', r'/\*[\s\S]*?\*/'),
+        # }
     
     async def analyze_basic(self, file_path: Path) -> Dict[str, Any]:
         """Perform basic analysis on a file."""
