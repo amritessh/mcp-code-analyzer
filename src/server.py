@@ -11,7 +11,7 @@ import json
 import os
 from datetime import datetime
 
-from mcp import Server
+from mcp.server import Server
 from mcp.server import stdio
 from mcp.types import Tool, TextContent, ImageContent, EmbeddedResource
 
@@ -44,7 +44,7 @@ from .analyzers.github_analyzer import GitHubAnalyzer, GitHubURLHandler
 from .analyzers.github_security import GitHubSecurityScanner
 
 # Initialize server
-server = Server(settings.server_name)
+mcp_server = Server(settings.server_name)
 logger.info(f"Initializing {settings.server_name} MCP server")
 
 # Initialize all analyzers
@@ -68,7 +68,7 @@ github_security = GitHubSecurityScanner()
 cache = FileCache()
 database = AnalysisDatabase()
 
-@server.list_tools()
+@mcp_server.list_tools()
 async def list_tools() -> List[Tool]:
     """List all available analysis tools."""
     return [
@@ -435,7 +435,7 @@ async def list_tools() -> List[Tool]:
         )
     ]
 
-@server.call_tool()
+@mcp_server.call_tool()
 async def call_tool(name: str, arguments: Dict[str, Any]) -> List[TextContent]:
     """Handle tool calls and route to appropriate handlers."""
     try:
@@ -1941,7 +1941,7 @@ async def main():
    
    # Start server
    async with stdio.stdio_server() as (read_stream, write_stream):
-       await server.run(read_stream, write_stream)
+       await mcp_server.run(read_stream, write_stream)
 
 if __name__ == "__main__":
    # Setup logging
