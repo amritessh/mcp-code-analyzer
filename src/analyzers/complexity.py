@@ -96,13 +96,17 @@ class ComplexityAnalyzer:
         """Calculate Halstead complexity metrics."""
         try:
             h = radon_metrics.h_visit(content)
-            return {
-                'volume': round(h.volume, 2),
-                'difficulty': round(h.difficulty, 2),
-                'effort': round(h.effort, 2),
-                'time': round(h.time, 2),
-                'bugs': round(h.bugs, 2)
-            }
+            # Check if the Halstead object has the expected attributes
+            metrics = {}
+            
+            # Use getattr with default values to handle missing attributes
+            metrics['volume'] = round(getattr(h, 'volume', 0), 2)
+            metrics['difficulty'] = round(getattr(h, 'difficulty', 0), 2)
+            metrics['effort'] = round(getattr(h, 'effort', 0), 2)
+            metrics['time'] = round(getattr(h, 'time', 0), 2)
+            metrics['bugs'] = round(getattr(h, 'bugs', 0), 2)
+            
+            return metrics
         except Exception as e:
             logger.error(f"Error calculating Halstead metrics: {e}")
             return {

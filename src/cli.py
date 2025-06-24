@@ -2,14 +2,17 @@
 import asyncio
 import click
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn
+from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
 from rich.table import Table
+import json
 
 from .analyzers.security import SecurityAnalyzer
 from .analyzers.quality import QualityAnalyzer
 from .analyzers.dependencies import DependencyAnalyzer
+from .analyzers.project_analyzer import ProjectAnalyzer, AnalysisReportGenerator
+from .utils.visualizer import DependencyVisualizer
 from .storage.database import AnalysisDatabase
 
 # Initialize components
@@ -17,6 +20,9 @@ console = Console()
 security_analyzer = SecurityAnalyzer()
 quality_analyzer = QualityAnalyzer()
 dependency_analyzer = DependencyAnalyzer()
+project_analyzer = ProjectAnalyzer()
+visualizer = DependencyVisualizer()
+report_generator = AnalysisReportGenerator()
 database = AnalysisDatabase()
 
 @click.group()

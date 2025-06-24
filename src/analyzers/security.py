@@ -189,6 +189,7 @@ class SecurityAnalyzer:
         pattern_issues = await self._scan_patterns(
             content, 
             lines, 
+            file_path,
             custom_rules
         )
         issues.extend(pattern_issues)
@@ -198,7 +199,7 @@ class SecurityAnalyzer:
             bandit_issues = await self._scan_python_security(file_path)
             issues.extend(bandit_issues)
         elif file_path.suffix in ['.js', '.ts']:
-            js_issues = await self._scan_javascript_security(content, lines)
+            js_issues = await self._scan_javascript_security(content, lines, file_path)
             issues.extend(js_issues)
         
         # Filter by severity
@@ -214,6 +215,7 @@ class SecurityAnalyzer:
         self,
         content: str,
         lines: List[str],
+        file_path: Path,
         custom_rules: Optional[List[str]] = None
     ) -> List[SecurityIssue]:
         """Scan using regex patterns."""
@@ -297,7 +299,8 @@ class SecurityAnalyzer:
     async def _scan_javascript_security(
         self, 
         content: str, 
-        lines: List[str]
+        lines: List[str],
+        file_path: Path
     ) -> List[SecurityIssue]:
         """JavaScript-specific security patterns."""
         js_rules = {
@@ -337,7 +340,7 @@ class SecurityAnalyzer:
                     rule_id=rule.id,
                     severity=rule.severity,
                     message=rule.message,
-                    file_path="current_file.js",
+                    file_path=str(file_path),
                     line_number=line_num,
                     column=match.start() - content.rfind('\n', 0, match.start()),
                     code_snippet=lines[line_num - 1] if line_num <= len(lines) else "",

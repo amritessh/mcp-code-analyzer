@@ -105,6 +105,10 @@ class GitHubAnalyzer:
     
     def _parse_github_url(self, url: str) -> Optional[Dict[str, str]]:
         """Parse GitHub URL to extract owner and repo."""
+        # Add protocol if missing
+        if not url.startswith(('http://', 'https://')):
+            url = 'https://' + url
+        
         # Handle different GitHub URL formats
         patterns = [
             r'github\.com[/:]([^/]+)/([^/\.]+)',
@@ -596,6 +600,10 @@ class GitHubURLHandler:
     def parse_url(url: str) -> Dict[str, Any]:
         """Parse GitHub URL and extract components."""
         import re
+        
+        # Add protocol if missing
+        if not url.startswith(('http://', 'https://', 'git@')):
+            url = 'https://' + url
         
         # Patterns for different GitHub URLs
         patterns = {
