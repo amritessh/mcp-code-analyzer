@@ -1,0 +1,257 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mcp-code-analyzer"
+version = "1.0.0"
+description = "A comprehensive code analysis tool for security, quality, complexity, and dependencies"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+maintainers = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+keywords = [
+    "code-analysis",
+    "security", 
+    "quality",
+    "complexity",
+    "dependencies",
+    "static-analysis",
+    "code-review",
+    "ci-cd",
+    "github",
+    "visualization",
+    "reporting"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Security",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "click>=8.0.0",
+    "rich>=12.0.0",
+    "networkx>=2.8.0",
+    "pyvis>=0.3.0",
+    "matplotlib>=3.5.0",
+    "seaborn>=0.11.0",
+    "plotly>=5.0.0",
+    "requests>=2.28.0",
+    "aiohttp>=3.8.0",
+    "asyncio-throttle>=1.0.0",
+    "pyyaml>=6.0",
+    "jinja2>=3.1.0",
+    "markdown>=3.4.0",
+    "beautifulsoup4>=4.11.0",
+    "lxml>=4.9.0",
+    "bandit>=1.7.0",
+    "safety>=2.3.0",
+    "radon>=5.1.0",
+    "mccabe>=0.7.0",
+    "flake8>=5.0.0",
+    "pylint>=2.15.0",
+    "black>=22.0.0",
+    "isort>=5.10.0",
+    "mypy>=1.0.0",
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "coverage>=6.0.0",
+    "tox>=4.0.0",
+    "pre-commit>=2.20.0",
+    "twine>=4.0.0",
+    "build>=0.10.0",
+    "wheel>=0.37.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=22.0.0",
+    "flake8>=5.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=2.20.0",
+    "tox>=4.0.0",
+    "coverage>=6.0.0",
+]
+docs = [
+    "sphinx>=5.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+    "myst-parser>=0.18.0",
+    "sphinx-autodoc-typehints>=1.19.0",
+]
+full = [
+    "matplotlib>=3.5.0",
+    "seaborn>=0.11.0",
+    "plotly>=5.0.0",
+    "graphviz>=0.20.0",
+    "pygraphviz>=1.9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/mcp-code-analyzer"
+Documentation = "https://github.com/yourusername/mcp-code-analyzer/tree/main/docs"
+Repository = "https://github.com/yourusername/mcp-code-analyzer"
+"Bug Tracker" = "https://github.com/yourusername/mcp-code-analyzer/issues"
+"CI/CD" = "https://github.com/yourusername/mcp-code-analyzer/actions"
+
+[project.scripts]
+mcp-code-analyzer = "cli:cli"
+mcp-analyzer = "cli:cli"
+
+[project.gui-scripts]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.yml", "*.yaml", "*.md"]
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["src"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "click.*",
+    "rich.*",
+    "networkx.*",
+    "pyvis.*",
+    "matplotlib.*",
+    "seaborn.*",
+    "plotly.*",
+    "requests.*",
+    "aiohttp.*",
+    "asyncio_throttle.*",
+    "yaml.*",
+    "jinja2.*",
+    "markdown.*",
+    "bs4.*",
+    "lxml.*",
+    "bandit.*",
+    "safety.*",
+    "radon.*",
+    "mccabe.*",
+    "flake8.*",
+    "pylint.*",
+    "black.*",
+    "isort.*",
+    "pytest.*",
+    "pytest_asyncio.*",
+    "pytest_cov.*",
+    "coverage.*",
+    "tox.*",
+    "pre_commit.*",
+    "twine.*",
+    "build.*",
+    "wheel.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+    "*/venv/*",
+    "*/env/*",
+    "*/\.venv/*",
+    "*/\.env/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py39, py310, py311, py312
+isolated_build = True
+
+[testenv]
+deps =
+    pytest>=7.0.0
+    pytest-asyncio>=0.21.0
+    pytest-cov>=4.0.0
+    coverage>=6.0.0
+commands =
+    pytest {posargs:tests} --cov=src --cov-report=term-missing --cov-report=html
+""" 
