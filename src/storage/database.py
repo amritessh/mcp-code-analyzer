@@ -20,7 +20,7 @@ class AnalysisDatabase:
     
     def _init_db(self):
         """Initialize database schema."""
-        with sqlite3.connect(self.db_path) as conn:
+        with sqlite3.connect(self.db_path, check_same_thread=False) as conn:
             conn.execute('''
                 CREATE TABLE IF NOT EXISTS file_analysis (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -98,7 +98,7 @@ class AnalysisDatabase:
         loop = asyncio.get_event_loop()
         
         def create_connection():
-            conn = sqlite3.connect(self.db_path)
+            conn = sqlite3.connect(self.db_path, check_same_thread=False)
             conn.row_factory = sqlite3.Row
             return conn
         

@@ -1084,7 +1084,10 @@ def show_history():
     import asyncio
     project_path = os.path.abspath('.')
     async def _show():
-        history = await database.get_project_history(project_path, limit=10)
+        # Create a new database instance to avoid threading issues
+        from .storage.database import AnalysisDatabase
+        db = AnalysisDatabase()
+        history = await db.get_project_history(project_path, limit=10)
         if not history:
             console.print("[red]No analysis history found.[/red]")
             return
@@ -1100,7 +1103,10 @@ def show_trends():
     """Show trending security and quality issues for the last 7 days."""
     import asyncio
     async def _show():
-        trends = await database.get_trending_issues(days=7)
+        # Create a new database instance to avoid threading issues
+        from .storage.database import AnalysisDatabase
+        db = AnalysisDatabase()
+        trends = await db.get_trending_issues(days=7)
         console.print("\n[bold cyan]📈 Trending Issues (Last 7 Days)[/bold cyan]")
         if trends['security_trends']:
             console.print("\n[bold]🔒 Security Issues:[/bold]")
