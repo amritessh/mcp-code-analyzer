@@ -1,13 +1,12 @@
 # src/analyzers/project_analyzer.py
 import asyncio
-from pathlib import Path
-from typing import Dict, Any, List, Optional, Set
-from datetime import datetime
 import json
-from collections import defaultdict, Counter
-
-from ..utils.logger import logger
-from ..config import settings
+import os
+from pathlib import Path
+from typing import Dict, List, Any, Optional, Set
+from datetime import datetime
+from utils.logger import logger
+from config import settings
 from .basic import BasicAnalyzer
 from .complexity import ComplexityAnalyzer
 from .security import SecurityAnalyzer
@@ -15,8 +14,8 @@ from .quality import QualityAnalyzer
 from .dependencies import DependencyAnalyzer
 from .todo_tracker import TodoTracker
 from .dead_code import DeadCodeDetector
-from ..storage.database import AnalysisDatabase
-from ..utils.visualizer import DependencyVisualizer, TreemapVisualizer
+from storage.database import AnalysisDatabase
+from utils.visualizer import DependencyVisualizer, TreemapVisualizer
 
 class ProjectAnalyzer:
     """Comprehensive project-wide analysis."""

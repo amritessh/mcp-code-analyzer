@@ -1,12 +1,12 @@
 # src/languages/javascript.py
 import re
-import json
+import os
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Dict, List, Any, Optional, Set
 import esprima
 
 from .base import LanguageAdapter
-from ..utils.logger import logger
+from utils.logger import logger
 
 class JavaScriptAdapter(LanguageAdapter):
     """JavaScript/TypeScript language adapter."""

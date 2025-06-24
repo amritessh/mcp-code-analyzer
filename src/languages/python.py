@@ -1,11 +1,10 @@
 # src/languages/python.py
 import ast
-import re
+import os
 from pathlib import Path
-from typing import Dict, Any, List, Optional
-
+from typing import Dict, List, Any, Optional, Set
 from .base import LanguageAdapter
-from ..utils.logger import logger
+from utils.logger import logger
 
 class PythonAdapter(LanguageAdapter):
     """Python-specific language adapter."""

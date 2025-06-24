@@ -10,13 +10,13 @@ from rich.table import Table
 import json
 from pprint import pprint
 
-from .analyzers.security import SecurityAnalyzer
-from .analyzers.quality import QualityAnalyzer
-from .analyzers.dependencies import DependencyAnalyzer
-from .analyzers.project_analyzer import ProjectAnalyzer, AnalysisReportGenerator
-from .analyzers.github_analyzer import GitHubAnalyzer
-from .utils.visualizer import DependencyVisualizer
-from .storage.database import AnalysisDatabase
+from analyzers.security import SecurityAnalyzer
+from analyzers.quality import QualityAnalyzer
+from analyzers.dependencies import DependencyAnalyzer
+from analyzers.project_analyzer import ProjectAnalyzer, AnalysisReportGenerator
+from analyzers.github_analyzer import GitHubAnalyzer
+from utils.visualizer import DependencyVisualizer
+from storage.database import AnalysisDatabase
 
 # Initialize components
 console = Console()
@@ -763,7 +763,7 @@ def _export_report(result: Dict[str, Any], export: str, repo_url: str):
     elif export == 'markdown':
         # Enhanced Markdown export using AnalysisReportGenerator
         try:
-            from .analyzers.project_analyzer import AnalysisReportGenerator
+            from analyzers.project_analyzer import AnalysisReportGenerator
             report_gen = AnalysisReportGenerator()
             
             # Prepare data for report generator
@@ -815,7 +815,7 @@ def _export_report(result: Dict[str, Any], export: str, repo_url: str):
     elif export == 'html':
         # Enhanced HTML export using AnalysisReportGenerator
         try:
-            from .analyzers.project_analyzer import AnalysisReportGenerator
+            from analyzers.project_analyzer import AnalysisReportGenerator
             report_gen = AnalysisReportGenerator()
             
             # Prepare data for report generator
@@ -1043,7 +1043,7 @@ async def _generate_standalone_report(project_path: Path, format: str, report_ty
             result = await project_analyzer.analyze_project(project_path)
             
             # Generate report
-            from .analyzers.project_analyzer import AnalysisReportGenerator
+            from analyzers.project_analyzer import AnalysisReportGenerator
             report_gen = AnalysisReportGenerator()
             
             report_content = report_gen.generate_report(
@@ -1085,7 +1085,7 @@ def show_history():
     project_path = os.path.abspath('.')
     async def _show():
         # Create a new database instance to avoid threading issues
-        from .storage.database import AnalysisDatabase
+        from storage.database import AnalysisDatabase
         db = AnalysisDatabase()
         history = await db.get_project_history(project_path, limit=10)
         if not history:
@@ -1104,7 +1104,7 @@ def show_trends():
     import asyncio
     async def _show():
         # Create a new database instance to avoid threading issues
-        from .storage.database import AnalysisDatabase
+        from storage.database import AnalysisDatabase
         db = AnalysisDatabase()
         trends = await db.get_trending_issues(days=7)
         console.print("\n[bold cyan]📈 Trending Issues (Last 7 Days)[/bold cyan]")

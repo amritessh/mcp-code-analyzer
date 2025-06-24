@@ -1,9 +1,11 @@
 # src/analyzers/github_security.py
 import asyncio
-from typing import Dict, Any, List, Optional
 import aiohttp
-
-from ..utils.logger import logger
+import json
+import os
+from pathlib import Path
+from typing import Dict, List, Any, Optional, Set
+from utils.logger import logger
 
 class GitHubSecurityScanner:
     """Scan GitHub repositories for security issues."""

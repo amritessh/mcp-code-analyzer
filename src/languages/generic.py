@@ -1,10 +1,10 @@
 # src/languages/generic.py
 import re
+import os
 from pathlib import Path
-from typing import Dict, Any, List, Optional
-
+from typing import Dict, List, Any, Optional, Set
 from .base import LanguageAdapter
-from ..utils.logger import logger
+from utils.logger import logger
 
 class GenericAdapter(LanguageAdapter):
     """Generic language adapter for unsupported languages."""

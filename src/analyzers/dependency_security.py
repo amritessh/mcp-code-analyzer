@@ -1,13 +1,16 @@
 # src/analyzers/dependency_security.py
+import asyncio
+import aiohttp
 import json
-import subprocess
+import os
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Dict, List, Any, Optional, Set
+from urllib.parse import urlparse
+from utils.logger import logger
+from models.security import Severity, SecurityIssue
+import subprocess
 import requests
 import toml
-
-from ..utils.logger import logger
-from ..models.security import Severity, SecurityIssue
 
 class DependencyScanner:
     """Scan for vulnerable dependencies."""

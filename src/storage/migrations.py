@@ -1,9 +1,9 @@
 # src/storage/migrations.py
 import sqlite3
+import os
 from pathlib import Path
-from typing import List, Callable
-
-from ..utils.logger import logger
+from typing import List, Dict, Any
+from utils.logger import logger
 
 class MigrationManager:
     """Manage database schema migrations."""

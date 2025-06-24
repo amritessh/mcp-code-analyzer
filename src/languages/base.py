@@ -1,7 +1,9 @@
 # src/languages/base.py
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Dict, List, Any, Optional, Set
+import ast
+import re
 
 class LanguageAdapter(ABC):
     """Base class for language-specific analyzers."""

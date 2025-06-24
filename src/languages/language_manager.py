@@ -1,12 +1,12 @@
 # src/languages/language_manager.py
+import os
 from pathlib import Path
-from typing import Dict, Any, List, Optional
-
+from typing import Dict, List, Any, Optional, Type
 from .base import LanguageAdapter
-from .python import PythonAdapter  # Already exists from week 1
+from .python import PythonAdapter
 from .javascript import JavaScriptAdapter
 from .generic import GenericAdapter
-from ..utils.logger import logger
+from utils.logger import logger
 
 class LanguageManager:
     """Manages language-specific adapters."""
@@ -51,4 +51,4 @@ class LanguageManager:
         if 'dependencies' in analysis_types:
             results['dependencies'] = await adapter.analyze_dependencies(file_path)
         
-        return results
+        return results 

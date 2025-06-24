@@ -1,15 +1,16 @@
 # src/analyzers/dependencies.py
 import ast
 import re
-import json
+import os
 from pathlib import Path
-from typing import Dict, Any, List, Set, Optional, Tuple
+from typing import Dict, List, Any, Optional, Set, Tuple
 from collections import defaultdict, deque
 import networkx as nx
+import json
+import subprocess
+from utils.logger import logger
+from config import settings
 from dataclasses import dataclass
-
-from ..utils.logger import logger
-from ..config import settings
 
 @dataclass
 class Dependency:

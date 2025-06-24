@@ -1,5 +1,6 @@
 # src/utils/visualizer.py
 import json
+import os
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Tuple
 import networkx as nx
@@ -7,8 +8,9 @@ from pyvis.network import Network
 import matplotlib.pyplot as plt
 import seaborn as sns
 from collections import defaultdict
-
-from ..utils.logger import logger
+import plotly.graph_objects as go
+import plotly.express as px
+from utils.logger import logger
 
 class DependencyVisualizer:
     """Generate various visualizations for code analysis."""
@@ -610,7 +612,6 @@ class TreemapVisualizer:
    """Generate treemap visualizations for code metrics."""
    
    def __init__(self):
-       import plotly.graph_objects as go
        self.go = go
    
    def generate_complexity_treemap(

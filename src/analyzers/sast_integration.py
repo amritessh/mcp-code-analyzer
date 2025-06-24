@@ -1,12 +1,12 @@
 # src/analyzers/sast_integration.py
 import asyncio
-from pathlib import Path
-from typing import Dict, Any, List, Optional
 import subprocess
 import json
-
-from ..utils.logger import logger
-from ..models.security import SecurityIssue, Severity
+import os
+from pathlib import Path
+from typing import Dict, List, Any, Optional
+from utils.logger import logger
+from models.security import SecurityIssue, Severity
 
 class SASTIntegration:
     """Integrate with external SAST tools."""

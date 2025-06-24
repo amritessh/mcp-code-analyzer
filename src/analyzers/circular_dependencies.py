@@ -1,10 +1,11 @@
 # src/analyzers/circular_dependencies.py
-import networkx as nx
+import ast
+import os
 from pathlib import Path
-from typing import Dict, Any, List, Set, Optional, Tuple
-from collections import defaultdict
-
-from ..utils.logger import logger
+from typing import Dict, List, Any, Optional, Set, Tuple
+from collections import defaultdict, deque
+import networkx as nx
+from utils.logger import logger
 
 class CircularDependencyDetector:
     """Detect and analyze circular dependencies."""

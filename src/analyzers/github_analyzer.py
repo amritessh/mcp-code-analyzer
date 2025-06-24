@@ -1,19 +1,18 @@
 # src/analyzers/github_analyzer.py
-import os
-import tempfile
-import shutil
 import asyncio
-from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple
-from urllib.parse import urlparse
 import aiohttp
-import git
-from git import Repo
-import base64
 import json
-
-from ..utils.logger import logger
-from ..config import settings
+import os
+import re
+import tempfile
+import subprocess
+from pathlib import Path
+from typing import Dict, List, Any, Optional, Set, Tuple
+from urllib.parse import urlparse, urljoin
+from datetime import datetime, timedelta
+import hashlib
+from utils.logger import logger
+from config import settings
 from .project_analyzer import ProjectAnalyzer
 
 class GitHubAnalyzer:
@@ -115,7 +114,6 @@ class GitHubAnalyzer:
             r'github\.com/([^/]+)/([^/]+)\.git',
         ]
         
-        import re
         for pattern in patterns:
             match = re.search(pattern, url)
             if match:

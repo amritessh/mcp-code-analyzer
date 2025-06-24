@@ -1,13 +1,14 @@
 # src/analyzers/basic.py
 import ast
+import os
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Dict, List, Any, Optional
 import re
 
-from ..utils.logger import logger
-from ..config import settings
+from utils.logger import logger
+from config import settings
 from .complexity import ComplexityAnalyzer
-from ..storage.cache import FileCache
+from storage.cache import FileCache
 
 class BasicAnalyzer:
     """Basic file analyzer for code metrics."""

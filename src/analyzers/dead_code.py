@@ -1,10 +1,11 @@
 # src/analyzers/dead_code.py
 import ast
+import os
 from pathlib import Path
 from typing import Dict, Any, List, Set, Optional
 import subprocess
 
-from ..utils.logger import logger
+from utils.logger import logger
 
 class DeadCodeDetector:
     """Detect unused code, imports, and variables."""

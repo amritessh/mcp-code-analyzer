@@ -1,14 +1,15 @@
 # src/analyzers/quality.py
 import ast
 import re
+import os
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, List, Any, Optional, Set
 from collections import defaultdict
 import subprocess
-
-from ..utils.logger import logger
-from ..config import settings
-from ..models.quality import QualityIssue, QualityMetric, CodeSmell
+import json
+from utils.logger import logger
+from config import settings
+from models.quality import QualityIssue, QualityMetric, CodeSmell
 
 class QualityAnalyzer:
     """Analyze code quality metrics and detect code smells."""
