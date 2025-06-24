@@ -143,7 +143,10 @@ class QualityAnalyzer:
                 message=f"Syntax error: {str(e)}",
                 file_path=str(file_path),
                 line_number=e.lineno or 0,
-                column=e.offset or 0
+                column=e.offset or 0,
+                code_snippet=lines[e.lineno-1].strip() if e.lineno and e.lineno <= len(lines) else '',
+                reference='',
+                fix_suggestion='Fix the syntax error.'
             ))
         
         return issues, metrics
@@ -166,7 +169,10 @@ class QualityAnalyzer:
                     message=self.smell_detectors['long_line']['message'],
                     file_path=str(file_path),
                     line_number=i + 1,
-                    column=self.smell_detectors['long_line']['threshold']
+                    column=self.smell_detectors['long_line']['threshold'],
+                    code_snippet=line.strip(),
+                    reference='PEP8: E501',
+                    fix_suggestion='Break long lines into shorter ones.'
                 ))
         
         # Magic numbers
@@ -185,7 +191,10 @@ class QualityAnalyzer:
                         message=self.smell_detectors['magic_numbers']['message'],
                         file_path=str(file_path),
                         line_number=i + 1,
-                        column=match.start()
+                        column=match.start(),
+                        code_snippet=line.strip(),
+                        reference='PEP8: Avoid magic numbers',
+                        fix_suggestion='Replace with a named constant.'
                     ))
         
         # Duplicate code detection (simple version)
@@ -197,7 +206,10 @@ class QualityAnalyzer:
                 message=f"Duplicate code block found (lines {dup['start']}-{dup['end']})",
                 file_path=str(file_path),
                 line_number=dup['start'],
-                column=0
+                column=0,
+                code_snippet='\n'.join(lines[dup['start']-1:dup['end']]),
+                reference='DRY Principle',
+                fix_suggestion='Refactor duplicate code into a function or method.'
             ))
         
         return issues
@@ -373,7 +385,10 @@ class PythonQualityVisitor(ast.NodeVisitor):
                 message=f"Function '{node.name}' missing docstring",
                 file_path="",
                 line_number=node.lineno,
-                column=node.col_offset
+                column=node.col_offset,
+                code_snippet=self.lines[node.lineno-1].strip() if node.lineno and node.lineno <= len(self.lines) else '',
+                reference='PEP8: E251',
+                fix_suggestion='Add a docstring to the function.'
             ))
         
         # Check function length
@@ -385,7 +400,10 @@ class PythonQualityVisitor(ast.NodeVisitor):
                 message=f"Function '{node.name}' is too long ({func_length} lines)",
                 file_path="",
                 line_number=node.lineno,
-                column=node.col_offset
+                column=node.col_offset,
+                code_snippet=self.lines[node.lineno-1].strip() if node.lineno and node.lineno <= len(self.lines) else '',
+                reference='PEP8: E501',
+                fix_suggestion='Break long functions into smaller ones.'
             ))
         self.max_function_length = max(self.max_function_length, func_length)
         
@@ -398,7 +416,10 @@ class PythonQualityVisitor(ast.NodeVisitor):
                 message=f"Function '{node.name}' has too many parameters ({num_params})",
                 file_path="",
                 line_number=node.lineno,
-                column=node.col_offset
+                column=node.col_offset,
+                code_snippet=self.lines[node.lineno-1].strip() if node.lineno and node.lineno <= len(self.lines) else '',
+                reference='PEP8: R0913',
+                fix_suggestion='Consider reducing the number of parameters.'
             ))
         self.max_parameters = max(self.max_parameters, num_params)
         
@@ -421,7 +442,10 @@ class PythonQualityVisitor(ast.NodeVisitor):
                 message=f"Class '{node.name}' is too large ({class_length} lines)",
                 file_path="",
                 line_number=node.lineno,
-                column=node.col_offset
+                column=node.col_offset,
+                code_snippet=self.lines[node.lineno-1].strip() if node.lineno and node.lineno <= len(self.lines) else '',
+                reference='PEP8: E1002',
+                fix_suggestion='Consider splitting the class into smaller ones.'
             ))
         self.max_class_length = max(self.max_class_length, class_length)
         

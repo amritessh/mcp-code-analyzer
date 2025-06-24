@@ -1,0 +1,80 @@
+name: Code Analysis
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+        
+    - name: Run code analysis
+      run: |
+        python run_cli.py analyze-project . --format markdown --output ./reports
+        
+    - name: Upload analysis report
+      uses: actions/upload-artifact@v3
+      with:
+        name: code-analysis-report
+        path: ./reports/
+        
+    - name: Generate analysis summary
+      run: |
+        echo "## 📊 Code Analysis Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # Check if report was generated
+        if [ -f "./reports/analysis_report_detailed_*.md" ]; then
+          echo "✅ Analysis completed successfully" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📁 **Report generated:** Check the artifacts for detailed analysis" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Analysis failed or no report generated" >> $GITHUB_STEP_SUMMARY
+          exit 1
+        fi
+        
+    - name: Comment PR with analysis summary
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          // Find the latest report
+          const reportsDir = './reports';
+          const files = fs.readdirSync(reportsDir);
+          const reportFile = files.find(f => f.startsWith('analysis_report_detailed_') && f.endsWith('.md'));
+          
+          if (reportFile) {
+            const reportPath = path.join(reportsDir, reportFile);
+            const reportContent = fs.readFileSync(reportPath, 'utf8');
+            
+            // Extract summary information
+            const summaryMatch = reportContent.match(/## 📊 Overview[\s\S]*?(?=##|$)/);
+            const summary = summaryMatch ? summaryMatch[0] : 'Analysis completed. Check artifacts for full report.';
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🔍 Code Analysis Summary\n\n${summary}\n\n📋 **Full Report:** Available in workflow artifacts`
+            });
+          } 

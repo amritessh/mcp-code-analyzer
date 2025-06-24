@@ -55,3 +55,53 @@ class FileMetrics:
                 }
             }
         }
+
+@dataclass
+class ComplexityIssue:
+    name: str
+    type: str  # 'function', 'class', 'method'
+    complexity: int
+    risk_level: str
+    file_path: str
+    line_number: int
+    end_line: int
+    code_snippet: str = ""
+    reference: str = ""
+    fix_suggestion: str = ""
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'name': self.name,
+            'type': self.type,
+            'complexity': self.complexity,
+            'risk_level': self.risk_level,
+            'file_path': self.file_path,
+            'line_number': self.line_number,
+            'end_line': self.end_line,
+            'code_snippet': self.code_snippet,
+            'reference': self.reference,
+            'fix_suggestion': self.fix_suggestion
+        }
+
+@dataclass
+class DependencyIssue:
+    type: str
+    severity: str
+    message: str
+    file_path: str
+    line_number: int = 0
+    code_snippet: str = ""
+    reference: str = ""
+    fix_suggestion: str = ""
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'type': self.type,
+            'severity': self.severity,
+            'message': self.message,
+            'file_path': self.file_path,
+            'line_number': self.line_number,
+            'code_snippet': self.code_snippet,
+            'reference': self.reference,
+            'fix_suggestion': self.fix_suggestion
+        }

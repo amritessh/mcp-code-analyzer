@@ -1,0 +1,45 @@
+{
+  "analysis": {
+    "include_patterns": ["src/**/*.py", "tests/**/*.py"],
+    "exclude_patterns": ["**/__pycache__/**", "**/*.pyc", "venv/**", ".git/**"],
+    "max_complexity": 15,
+    "security_rules": ["all"],
+    "quality_threshold": 80,
+    "quick_mode": false,
+    "parallel_workers": 4
+  },
+  "reporting": {
+    "format": "markdown",
+    "include_visualizations": true,
+    "export_graphs": true,
+    "include_code_snippets": true,
+    "include_fix_suggestions": true
+  },
+  "ci": {
+    "fail_on_critical": true,
+    "fail_on_high": false,
+    "comment_on_pr": true,
+    "generate_badges": true,
+    "upload_artifacts": true
+  },
+  "quality_gates": {
+    "critical_issues": 0,
+    "high_issues": 5,
+    "overall_health_score": 80,
+    "complexity_threshold": 15,
+    "security_score": 90,
+    "quality_score": 85
+  },
+  "custom_rules": {
+    "max_function_length": 50,
+    "max_file_length": 500,
+    "require_docstrings": true,
+    "naming_conventions": "snake_case",
+    "max_parameters": 7
+  },
+  "notifications": {
+    "slack_webhook": null,
+    "email": null,
+    "github_comment": true
+  }
+} 

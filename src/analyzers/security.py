@@ -253,6 +253,8 @@ class SecurityAnalyzer:
                     column=match.start() - content.rfind('\n', 0, match.start()),
                     code_snippet=snippet,
                     cwe=rule.cwe,
+                    owasp=getattr(rule, 'owasp', None),
+                    fix_suggestion=getattr(rule, 'fix_suggestion', None),
                     confidence='HIGH'
                 )
                 
@@ -286,6 +288,8 @@ class SecurityAnalyzer:
                     column=result.col_offset,
                     code_snippet=result.get_code(),
                     cwe=result.cwe.id if hasattr(result, 'cwe') else None,
+                    owasp=getattr(result, 'owasp', None),
+                    fix_suggestion=getattr(result, 'fix_suggestion', None),
                     confidence=result.confidence
                 )
                 
@@ -345,6 +349,8 @@ class SecurityAnalyzer:
                     column=match.start() - content.rfind('\n', 0, match.start()),
                     code_snippet=lines[line_num - 1] if line_num <= len(lines) else "",
                     cwe=rule.cwe,
+                    owasp=getattr(rule, 'owasp', None),
+                    fix_suggestion=getattr(rule, 'fix_suggestion', None),
                     confidence='MEDIUM'
                 )
                 issues.append(issue)

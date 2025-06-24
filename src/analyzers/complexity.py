@@ -8,7 +8,7 @@ from radon.visitors import ComplexityVisitor
 
 from ..utils.logger import logger
 from ..config import settings
-from ..models.metrics import ComplexityMetric, ComplexityLevel
+from ..models.metrics import ComplexityMetric, ComplexityLevel, ComplexityIssue
 
 class ComplexityAnalyzer:
     """Analyze code complexity using various metrics."""
@@ -66,7 +66,7 @@ class ComplexityAnalyzer:
         
         if include_details:
             result['details'] = self._format_complexity_details(cc_results)
-            result['hotspots'] = self._identify_hotspots(cc_results)
+            result['hotspots'] = self._identify_hotspots(cc_results, str(file_path), content)
         
         return result
     
@@ -171,20 +171,31 @@ class ComplexityAnalyzer:
     
     def _identify_hotspots(
         self, 
-        results: List[ComplexityVisitor]
+        results: List[ComplexityVisitor],
+        file_path: str = None,
+        content: str = None
     ) -> List[Dict[str, Any]]:
         """Identify complexity hotspots that need attention."""
         hotspots = []
-        
+        lines = content.split('\n') if content else []
         for r in results:
             if r.complexity > self.thresholds['high']:
-                hotspots.append({
-                    'name': r.name,
-                    'complexity': r.complexity,
-                    'location': f"Line {r.lineno}-{r.endline}",
-                    'recommendation': self._get_recommendation(r.complexity)
-                })
-        
+                snippet = ''
+                if lines and r.lineno and r.endline:
+                    snippet = '\n'.join(lines[r.lineno-1:r.endline])
+                issue = ComplexityIssue(
+                    name=r.name,
+                    type=r.letter,
+                    complexity=r.complexity,
+                    risk_level=self._get_complexity_level(r.complexity),
+                    file_path=file_path or '',
+                    line_number=r.lineno,
+                    end_line=r.endline,
+                    code_snippet=snippet,
+                    reference='Cyclomatic Complexity',
+                    fix_suggestion=self._get_recommendation(r.complexity)
+                )
+                hotspots.append(issue.to_dict())
         return hotspots[:5]  # Top 5 hotspots
     
     def _get_recommendation(self, complexity: int) -> str:

@@ -105,7 +105,8 @@ class ProjectAnalyzer:
             results['recommendations'] = self._generate_project_recommendations(results)
             
             # Save to database
-            await self._save_analysis_to_db(results)
+            # Temporarily disabled due to threading issues
+            # await self._save_analysis_to_db(results)
             
         except Exception as e:
             logger.error(f"Project analysis failed: {e}")

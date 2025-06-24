@@ -37,6 +37,8 @@ class SecurityIssue:
     column: int
     code_snippet: str
     cwe: Optional[str] = None
+    owasp: Optional[str] = None
+    fix_suggestion: Optional[str] = None
     confidence: str = "MEDIUM"  # LOW, MEDIUM, HIGH
     
     def to_dict(self) -> Dict[str, Any]:
@@ -52,6 +54,8 @@ class SecurityIssue:
             },
             'code_snippet': self.code_snippet,
             'cwe': self.cwe,
+            'owasp': self.owasp,
+            'fix_suggestion': self.fix_suggestion,
             'confidence': self.confidence
         }
     

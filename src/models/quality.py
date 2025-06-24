@@ -23,6 +23,9 @@ class QualityIssue:
     file_path: str
     line_number: int
     column: int
+    code_snippet: str = ""
+    reference: str = ""
+    fix_suggestion: str = ""
     suggestion: Optional[str] = None
     
     def to_dict(self) -> Dict[str, Any]:
@@ -35,6 +38,9 @@ class QualityIssue:
                 'line': self.line_number,
                 'column': self.column
             },
+            'code_snippet': self.code_snippet,
+            'reference': self.reference,
+            'fix_suggestion': self.fix_suggestion,
             'suggestion': self.suggestion
         }
 
