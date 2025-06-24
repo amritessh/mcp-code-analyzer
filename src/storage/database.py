@@ -96,12 +96,17 @@ class AnalysisDatabase:
     async def get_connection(self):
         """Get database connection."""
         loop = asyncio.get_event_loop()
-        conn = await loop.run_in_executor(None, sqlite3.connect, self.db_path)
-        conn.row_factory = sqlite3.Row
+        
+        def create_connection():
+            conn = sqlite3.connect(self.db_path)
+            conn.row_factory = sqlite3.Row
+            return conn
+        
+        conn = await loop.run_in_executor(None, create_connection)
         try:
             yield conn
         finally:
-            conn.close()
+            await loop.run_in_executor(None, conn.close)
     
     async def save_analysis(
         self,

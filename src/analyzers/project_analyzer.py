@@ -634,26 +634,30 @@ class ProjectAnalyzer:
     async def _save_analysis_to_db(self, results: Dict[str, Any]) -> None:
         """Save analysis results to database."""
         try:
-            # Save analysis history
-            await self.database.execute('''
-                INSERT INTO analysis_history
-                (project_path, analysis_type, total_files, total_issues, 
-                 duration_seconds, started_at, summary)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (
-                results['project_path'],
-                'comprehensive',
-                results['summary'].get('total_files', 0),
-                len(results.get('issues', [])),
-                results.get('duration', 0),
-                results.get('started_at'),
-                json.dumps(results['summary'])
-            ))
+            # Save analysis history using the correct database pattern
+            async with self.database.get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    INSERT INTO analysis_history
+                    (project_path, analysis_type, total_files, total_issues, 
+                     duration_seconds, started_at, summary)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                ''', (
+                    results['project_path'],
+                    'comprehensive',
+                    results['summary'].get('total_files', 0),
+                    len(results.get('issues', [])),
+                    results.get('duration', 0),
+                    results.get('started_at'),
+                    json.dumps(results['summary'])
+                ))
+                conn.commit()
             
             logger.info("Analysis results saved to database")
             
         except Exception as e:
-            logger.error(f"Failed to save analysis to database: {e}")
+            logger.warning(f"Failed to save analysis to database (continuing without database save): {e}")
+            # Don't fail the entire analysis if database save fails
 
 
 class AnalysisReportGenerator:
