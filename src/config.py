@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     # Output settings
     pretty_print: bool = True
     include_metrics_details: bool = True
+
+    # GitHub temp repo cleanup
+    cleanup_temp_repos: bool = True
     
     class Config:
         env_file = ".env"

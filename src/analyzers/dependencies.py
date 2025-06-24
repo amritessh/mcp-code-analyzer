@@ -100,7 +100,16 @@ class DependencyAnalyzer:
         
         return {
             'path': str(path),
-            'metrics': metrics,
+            'metrics': {
+                'total_dependencies': metrics.total_dependencies,
+                'external_dependencies': metrics.external_dependencies,
+                'internal_dependencies': metrics.internal_dependencies,
+                'circular_dependencies': metrics.circular_dependencies,
+                'coupling_score': metrics.coupling_score,
+                'cohesion_score': metrics.cohesion_score,
+                'instability': metrics.instability,
+                'abstractness': metrics.abstractness
+            },
             'patterns': patterns,
             'visualization': viz_data,
             'dependencies': self._get_dependency_list(),

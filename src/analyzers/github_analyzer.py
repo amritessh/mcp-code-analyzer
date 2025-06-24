@@ -432,6 +432,7 @@ class GitHubAnalyzer:
         # Parse repo info
         repo_info = self._parse_github_url(repo_url)
         clone_dir = self.temp_dir / f"{repo_info['owner']}_{repo_info['repo']}"
+        clone_url = f"https://github.com/{repo_info['owner']}/{repo_info['repo']}.git"
         
         try:
             # Clone repository
@@ -442,7 +443,7 @@ class GitHubAnalyzer:
             
             # Use git to clone
             repo = Repo.clone_from(
-                repo_url,
+                clone_url,
                 clone_dir,
                 branch=branch,
                 depth=1  # Shallow clone for speed
