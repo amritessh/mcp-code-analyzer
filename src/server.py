@@ -1594,97 +1594,97 @@ def format_github_security_results(result: Dict[str, Any]) -> str:
  • Dependabot Alerts: {len(result.get('dependabot_alerts', []))}
  • Secret Scanning Alerts: {len(result.get('secret_scanning', []))}
 """
-    
-    # Details on vulnerabilities
-    if result.get('security_advisories'):
-        output += "\n🚨 Security Advisories:\n"
-        for adv in result['security_advisories'][:5]:
-            severity = adv.get('severity', 'UNKNOWN')
-            severity_icon = {
-                'CRITICAL': '🔴',
-                'HIGH': '🟠',
-                'MODERATE': '🟡',
-                'LOW': '🟢'
-            }.get(severity, '⚪')
-            
-            output += f"  • {severity_icon} [{severity}] {adv.get('package', 'Unknown package')}\n"
-            output += f"    {adv.get('summary', 'No summary')}\n"
-            if adv.get('score'):
-                output += f"    CVSS Score: {adv['score']}\n"
-        
-        if len(result['security_advisories']) > 5:
-            output += f"\n  ... and {len(result['security_advisories']) - 5} more advisories\n"
-    
-    if result.get('dependabot_alerts'):
-        output += "\n🤖 Dependabot Alerts:\n"
-        for alert in result['dependabot_alerts'][:5]:
-            severity = alert.get('severity', 'unknown')
-            severity_icon = {
-                'critical': '🔴',
-                'high': '🟠',
-                'moderate': '🟡',
-                'low': '🟢'
-            }.get(severity, '⚪')
-            
-            output += f"  • {severity_icon} [{severity}] {alert.get('package', 'Unknown')}\n"
-            output += f"    Vulnerable: {alert.get('vulnerable_version', 'Unknown version')}\n"
-            if alert.get('cve_id'):
-                output += f"    CVE: {alert['cve_id']}\n"
-            output += f"    {alert.get('description', '')[:100]}...\n"
-        
-        if len(result['dependabot_alerts']) > 5:
-            output += f"\n  ... and {len(result['dependabot_alerts']) - 5} more alerts\n"
-    
-    if result.get('secret_scanning'):
-        output += "\n🔑 Secret Scanning Alerts:\n"
-        output += "  ⚠️  CRITICAL: Exposed secrets detected!\n"
-        for secret in result['secret_scanning'][:3]:
-            output += f"  • {secret.get('secret_type', 'Unknown type')}\n"
-            output += f"    Created: {secret.get('created_at', 'Unknown')[:10]}\n"
-    
-    # Security file status
-    security_files = result.get('security_files', {})
-    output += "\n📁 Security Configuration:\n"
-    
-    security_file_checks = [
-        ('SECURITY.md', security_files.get('SECURITY.md') or security_files.get('.github/SECURITY.md'), 
-         'Security policy'),
-        ('Dependabot', security_files.get('.github/dependabot.yml'), 
-         'Automated dependency updates'),
-        ('CodeQL', security_files.get('.github/workflows/codeql-analysis.yml'), 
-         'Code security analysis'),
-        ('.gitignore', security_files.get('.gitignore'), 
-         'Prevent sensitive file commits')
-    ]
-    
-    for name, present, description in security_file_checks:
-        icon = '✅' if present else '❌'
-        output += f"  • {name}: {icon} {description}\n"
-    
-    # Recommendations
-    if result.get('recommendations'):
-        output += "\n💡 Security Recommendations:\n"
-        for rec in result['recommendations']:
-            output += f"  {rec}\n"
-    
-    # Risk assessment
-    score = result.get('security_score', 100)
-    if score >= 90:
-        risk_level = "🟢 Low Risk"
-        risk_message = "Repository has good security practices"
-    elif score >= 70:
-        risk_level = "🟡 Medium Risk"
-        risk_message = "Some security improvements recommended"
-    elif score >= 50:
-        risk_level = "🟠 High Risk"
-        risk_message = "Significant security issues need attention"
-    else:
-        risk_level = "🔴 Critical Risk"
-        risk_message = "Immediate security action required"
-    
-    output += f"\n⚠️  Risk Assessment: {risk_level}\n   {risk_message}\n"
-    
-    return output
+   
+   # Details on vulnerabilities
+   if result.get('security_advisories'):
+       output += "\n🚨 Security Advisories:\n"
+       for adv in result['security_advisories'][:5]:
+           severity = adv.get('severity', 'UNKNOWN')
+           severity_icon = {
+               'CRITICAL': '🔴',
+               'HIGH': '🟠',
+               'MODERATE': '🟡',
+               'LOW': '🟢'
+           }.get(severity, '⚪')
+           
+           output += f"  • {severity_icon} [{severity}] {adv.get('package', 'Unknown package')}\n"
+           output += f"    {adv.get('summary', 'No summary')}\n"
+           if adv.get('score'):
+               output += f"    CVSS Score: {adv['score']}\n"
+       
+       if len(result['security_advisories']) > 5:
+           output += f"\n  ... and {len(result['security_advisories']) - 5} more advisories\n"
+   
+   if result.get('dependabot_alerts'):
+       output += "\n🤖 Dependabot Alerts:\n"
+       for alert in result['dependabot_alerts'][:5]:
+           severity = alert.get('severity', 'unknown')
+           severity_icon = {
+               'critical': '🔴',
+               'high': '🟠',
+               'moderate': '🟡',
+               'low': '🟢'
+           }.get(severity, '⚪')
+           
+           output += f"  • {severity_icon} [{severity}] {alert.get('package', 'Unknown')}\n"
+           output += f"    Vulnerable: {alert.get('vulnerable_version', 'Unknown version')}\n"
+           if alert.get('cve_id'):
+               output += f"    CVE: {alert['cve_id']}\n"
+           output += f"    {alert.get('description', '')[:100]}...\n"
+       
+       if len(result['dependabot_alerts']) > 5:
+           output += f"\n  ... and {len(result['dependabot_alerts']) - 5} more alerts\n"
+   
+   if result.get('secret_scanning'):
+       output += "\n🔑 Secret Scanning Alerts:\n"
+       output += "  ⚠️  CRITICAL: Exposed secrets detected!\n"
+       for secret in result['secret_scanning'][:3]:
+           output += f"  • {secret.get('secret_type', 'Unknown type')}\n"
+           output += f"    Created: {secret.get('created_at', 'Unknown')[:10]}\n"
+   
+   # Security file status
+   security_files = result.get('security_files', {})
+   output += "\n📁 Security Configuration:\n"
+   
+   security_file_checks = [
+       ('SECURITY.md', security_files.get('SECURITY.md') or security_files.get('.github/SECURITY.md'), 
+        'Security policy'),
+       ('Dependabot', security_files.get('.github/dependabot.yml'), 
+        'Automated dependency updates'),
+       ('CodeQL', security_files.get('.github/workflows/codeql-analysis.yml'), 
+        'Code security analysis'),
+       ('.gitignore', security_files.get('.gitignore'), 
+        'Prevent sensitive file commits')
+   ]
+   
+   for name, present, description in security_file_checks:
+       icon = '✅' if present else '❌'
+       output += f"  • {name}: {icon} {description}\n"
+   
+   # Recommendations
+   if result.get('recommendations'):
+       output += "\n💡 Security Recommendations:\n"
+       for rec in result['recommendations']:
+           output += f"  {rec}\n"
+   
+   # Risk assessment
+   score = result.get('security_score', 100)
+   if score >= 90:
+       risk_level = "🟢 Low Risk"
+       risk_message = "Repository has good security practices"
+   elif score >= 70:
+       risk_level = "🟡 Medium Risk"
+       risk_message = "Some security improvements recommended"
+   elif score >= 50:
+       risk_level = "🟠 High Risk"
+       risk_message = "Significant security issues need attention"
+   else:
+       risk_level = "🔴 Critical Risk"
+       risk_message = "Immediate security action required"
+   
+   output += f"\n⚠️  Risk Assessment: {risk_level}\n   {risk_message}\n"
+   
+   return output
 
 def generate_repo_comparison(
    results: Dict[str, Dict[str, Any]],

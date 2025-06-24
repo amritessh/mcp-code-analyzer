@@ -638,19 +638,19 @@ class ProjectAnalyzer:
             async with self.database.get_connection() as conn:
                 cursor = conn.cursor()
                 cursor.execute('''
-                    INSERT INTO analysis_history
-                    (project_path, analysis_type, total_files, total_issues, 
-                     duration_seconds, started_at, summary)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                ''', (
-                    results['project_path'],
-                    'comprehensive',
-                    results['summary'].get('total_files', 0),
-                    len(results.get('issues', [])),
-                    results.get('duration', 0),
-                    results.get('started_at'),
-                    json.dumps(results['summary'])
-                ))
+                INSERT INTO analysis_history
+                (project_path, analysis_type, total_files, total_issues, 
+                 duration_seconds, started_at, summary)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                results['project_path'],
+                'comprehensive',
+                results['summary'].get('total_files', 0),
+                len(results.get('issues', [])),
+                results.get('duration', 0),
+                results.get('started_at'),
+                json.dumps(results['summary'])
+            ))
                 conn.commit()
             
             logger.info("Analysis results saved to database")

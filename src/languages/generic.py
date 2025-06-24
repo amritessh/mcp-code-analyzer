@@ -91,55 +91,55 @@ class GenericAdapter(LanguageAdapter):
         
         return dependencies
     
-    def get_comment_patterns(self) -> Dict[str, str]:
-        return self.comment_patterns
-    
-    def _detect_comment_style(self, lines: List[str]) -> Optional[str]:
-        """Detect the most likely comment character."""
-        comment_counts = {}
-        
-        for char, pattern in self.comment_patterns.items():
-            count = sum(1 for line in lines if re.search(pattern, line))
-            if count > 0:
-                comment_counts[char] = count
-        
-        if comment_counts:
-            return max(comment_counts.items(), key=lambda x: x[1])[0]
-        return None
-    
-    def _count_comments(self, lines: List[str], comment_char: str) -> int:
-        """Count comment lines using detected style."""
-        if comment_char not in self.comment_patterns:
-            return 0
-        
-        pattern = self.comment_patterns[comment_char]
-        return sum(1 for line in lines if re.search(pattern, line.strip()))
-    
-    def _detect_language(self, file_path: Path) -> str:
-        """Try to detect language from file extension."""
-        ext_to_lang = {
-            '.java': 'Java',
-            '.go': 'Go',
-            '.rs': 'Rust',
-            '.rb': 'Ruby',
-            '.php': 'PHP',
-            '.swift': 'Swift',
-            '.kt': 'Kotlin',
-            '.scala': 'Scala',
-            '.r': 'R',
-            '.m': 'Objective-C',
-            '.pl': 'Perl',
-            '.lua': 'Lua',
-            '.jl': 'Julia',
-            '.cpp': 'C++',
-            '.c': 'C',
-            '.h': 'C/C++ Header',
-            '.cs': 'C#',
-            '.vb': 'Visual Basic',
-            '.sql': 'SQL',
-            '.sh': 'Shell',
-            '.bat': 'Batch',
-            '.ps1': 'PowerShell'
-        }
-        
-        return ext_to_lang.get(file_path.suffix.lower(), 'Unknown')
+ def get_comment_patterns(self) -> Dict[str, str]:
+       return self.comment_patterns
+   
+   def _detect_comment_style(self, lines: List[str]) -> Optional[str]:
+       """Detect the most likely comment character."""
+       comment_counts = {}
+       
+       for char, pattern in self.comment_patterns.items():
+           count = sum(1 for line in lines if re.search(pattern, line))
+           if count > 0:
+               comment_counts[char] = count
+       
+       if comment_counts:
+           return max(comment_counts.items(), key=lambda x: x[1])[0]
+       return None
+   
+   def _count_comments(self, lines: List[str], comment_char: str) -> int:
+       """Count comment lines using detected style."""
+       if comment_char not in self.comment_patterns:
+           return 0
+       
+       pattern = self.comment_patterns[comment_char]
+       return sum(1 for line in lines if re.search(pattern, line.strip()))
+   
+   def _detect_language(self, file_path: Path) -> str:
+       """Try to detect language from file extension."""
+       ext_to_lang = {
+           '.java': 'Java',
+           '.go': 'Go',
+           '.rs': 'Rust',
+           '.rb': 'Ruby',
+           '.php': 'PHP',
+           '.swift': 'Swift',
+           '.kt': 'Kotlin',
+           '.scala': 'Scala',
+           '.r': 'R',
+           '.m': 'Objective-C',
+           '.pl': 'Perl',
+           '.lua': 'Lua',
+           '.jl': 'Julia',
+           '.cpp': 'C++',
+           '.c': 'C',
+           '.h': 'C/C++ Header',
+           '.cs': 'C#',
+           '.vb': 'Visual Basic',
+           '.sql': 'SQL',
+           '.sh': 'Shell',
+           '.bat': 'Batch',
+           '.ps1': 'PowerShell'
+       }
+       
+       return ext_to_lang.get(file_path.suffix.lower(), 'Unknown')

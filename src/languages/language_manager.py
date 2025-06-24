@@ -51,4 +51,4 @@ class LanguageManager:
         if 'dependencies' in analysis_types:
             results['dependencies'] = await adapter.analyze_dependencies(file_path)
         
-        return results 
+        return results

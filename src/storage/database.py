@@ -101,7 +101,7 @@ class AnalysisDatabase:
         
         def create_connection():
             conn = sqlite3.connect(self.db_path, check_same_thread=False)
-            conn.row_factory = sqlite3.Row
+        conn.row_factory = sqlite3.Row
             return conn
         
         conn = await loop.run_in_executor(None, create_connection)

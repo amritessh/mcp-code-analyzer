@@ -73,8 +73,8 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "mcp-code-analyzer=src.cli:cli",
-            "mcp-analyzer=src.cli:cli",
+            "mcp-code-analyzer=cli:cli",
+            "mcp-analyzer=cli:cli",
         ],
     },
     include_package_data=True,

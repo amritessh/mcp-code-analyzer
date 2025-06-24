@@ -59,8 +59,8 @@ class Settings:
             "max_function_length": 50,
             "max_line_length": 120,
             "min_test_coverage": 80
-        }
-        
+    }
+    
         # GitHub settings
         self.github_rate_limit = 5000
         self.github_timeout = 30

@@ -113,8 +113,8 @@ Repository = "https://github.com/yourusername/mcp-code-analyzer"
 "CI/CD" = "https://github.com/yourusername/mcp-code-analyzer/actions"
 
 [project.scripts]
-mcp-code-analyzer = "src.cli:cli"
-mcp-analyzer = "src.cli:cli"
+mcp-code-analyzer = "cli:cli"
+mcp-analyzer = "cli:cli"
 
 [project.gui-scripts]
 

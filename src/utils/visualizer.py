@@ -527,14 +527,14 @@ class DependencyVisualizer:
                 colors.append('#fd7e14')  # Orange
             elif val > 5:
                 colors.append('#ffc107')  # Yellow
-            else:
-                colors.append('#28a745')  # Green
-        
-        return colors
-    
-    def _generate_markdown_dashboard(self, results: Dict[str, Any]) -> str:
-        """Generate Markdown dashboard."""
-        md = f"""# Code Analysis Report
+else:
+               colors.append('#28a745')  # Green
+       
+       return colors
+   
+   def _generate_markdown_dashboard(self, results: Dict[str, Any]) -> str:
+       """Generate Markdown dashboard."""
+       md = f"""# Code Analysis Report
 
 Generated: {results.get('timestamp', 'N/A')}
 
@@ -568,44 +568,44 @@ Generated: {results.get('timestamp', 'N/A')}
 |------|------------|------------|
 """
        
-        # Add top complex files
-        complex_files = results.get('complex_files', [])
-        for file_info in complex_files[:10]:
-            risk_emoji = self._get_risk_emoji(file_info['complexity'])
-            md += f"| {file_info['file']} | {file_info['complexity']} | {risk_emoji} |\n"
+       # Add top complex files
+       complex_files = results.get('complex_files', [])
+       for file_info in complex_files[:10]:
+           risk_emoji = self._get_risk_emoji(file_info['complexity'])
+           md += f"| {file_info['file']} | {file_info['complexity']} | {risk_emoji} |\n"
        
-        md += f"""
+       md += f"""
 ## 🔄 Circular Dependencies
 
 Found {len(results.get('circular_dependencies', []))} circular dependency chains.
 
 """
        
-        # Add circular dependencies
-        for i, cycle in enumerate(results.get('circular_dependencies', [])[:5]):
-            md += f"{i+1}. {' → '.join(cycle)} → {cycle[0]}\n"
+       # Add circular dependencies
+       for i, cycle in enumerate(results.get('circular_dependencies', [])[:5]):
+           md += f"{i+1}. {' → '.join(cycle)} → {cycle[0]}\n"
        
-        md += """
+       md += """
 ## 💡 Recommendations
 
 """
        
-        # Add recommendations
-        for i, rec in enumerate(results.get('recommendations', [])[:10]):
-            md += f"{i+1}. {rec}\n"
+       # Add recommendations
+       for i, rec in enumerate(results.get('recommendations', [])[:10]):
+           md += f"{i+1}. {rec}\n"
        
-        return md
+       return md
    
-    def _get_risk_emoji(self, complexity: float) -> str:
-        """Get risk emoji based on complexity."""
-        if complexity > 20:
-            return "🔴 Very High"
-        elif complexity > 10:
-            return "🟠 High"
-        elif complexity > 5:
-            return "🟡 Medium"
-        else:
-            return "🟢 Low"
+   def _get_risk_emoji(self, complexity: float) -> str:
+       """Get risk emoji based on complexity."""
+       if complexity > 20:
+           return "🔴 Very High"
+       elif complexity > 10:
+           return "🟠 High"
+       elif complexity > 5:
+           return "🟡 Medium"
+       else:
+           return "🟢 Low"
 
 
 class TreemapVisualizer:
