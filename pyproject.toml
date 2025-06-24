@@ -113,8 +113,8 @@ Repository = "https://github.com/yourusername/mcp-code-analyzer"
 "CI/CD" = "https://github.com/yourusername/mcp-code-analyzer/actions"
 
 [project.scripts]
-mcp-code-analyzer = "cli:cli"
-mcp-analyzer = "cli:cli"
+mcp-code-analyzer = "src.cli:cli"
+mcp-analyzer = "src.cli:cli"
 
 [project.gui-scripts]
 
@@ -130,18 +130,18 @@ where = ["src"]
 [tool.black]
 line-length = 88
 target-version = ['py39']
-include = '\.pyi?$'
+include = '\\.pyi?$'
 extend-exclude = '''
-/(
-  # directories
-  \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | build
-  | dist
+/(\
+  # directories\
+  \\.eggs\
+  | \\.git\
+  | \\.hg\
+  | \\.mypy_cache\
+  | \\.tox\
+  | \\.venv\
+  | build\
+  | dist\
 )/
 '''
 
@@ -207,11 +207,11 @@ ignore_missing_imports = true
 minversion = "7.0"
 addopts = "-ra -q --strict-markers --strict-config"
 testpaths = ["tests"]
-asyncio_mode = "auto"
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
     "unit: marks tests as unit tests",
+    "asyncio: mark test as asyncio",
 ]
 
 [tool.coverage.run]
@@ -222,8 +222,8 @@ omit = [
     "*/__pycache__/*",
     "*/venv/*",
     "*/env/*",
-    "*/\.venv/*",
-    "*/\.env/*",
+    "*/.venv/*",
+    "*/.env/*",
 ]
 
 [tool.coverage.report]
@@ -236,8 +236,8 @@ exclude_lines = [
     "raise NotImplementedError",
     "if 0:",
     "if __name__ == .__main__.:",
-    "class .*\\bProtocol\\):",
-    "@(abc\\.)?abstractmethod",
+    "class .*\\\\bProtocol\\\\):",
+    "@(abc\\\\.)?abstractmethod",
 ]
 
 [tool.tox]
